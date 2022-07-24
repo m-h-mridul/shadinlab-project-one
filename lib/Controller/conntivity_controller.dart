@@ -56,7 +56,6 @@ class ConntedtivityController extends GetxController {
               margin: EdgeInsets.only(bottom: 20, left: 12, right: 12),
               colorText: Colors.white);
         }
-
         break;
       case ConnectivityResult.none:
         connectionStatus.value = 4;
@@ -80,6 +79,7 @@ class ConntedtivityController extends GetxController {
         }
         break;
     }
+    print('Connectivitu cheak end');
   }
 
   @override

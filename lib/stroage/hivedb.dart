@@ -1,20 +1,30 @@
 import 'package:hive_flutter/adapters.dart';
 import '../model/dataModel.dart';
+import '../model/modelapidata.dart';
 
 class Hivedb {
-  static String boxname = 'datalist';
+  static String boxname = 'Hivebox_todolist';
   final _box = Hive.box(boxname);
-  static String dataName = 'datalist';
+  static String datadbName = 'datalist';
+  static String postlistdbname = 'postrestapilist';
 
-  Future<String> dataCheak() async {
-    return await _box.get(dataName) ?? Future.value('Not find');
+  bool dataCheak() {
+    return _box.isEmpty;
   }
 
-  Future<List<DataModel>> getdata() async {
-    return await _box.get(dataName);
+  Future<List<DataModel>> firebasegetdata() async {
+    return await _box.get(datadbName);
+  }
+
+  Future<List<Post>> restpaigetdata() async {
+    return await _box.get(postlistdbname);
   }
 
   putdata(List<DataModel> data) {
-    _box.put(dataName, data);
+    _box.put(datadbName, data);
+  }
+
+  putrestpailist(List<Post> data) {
+    _box.put(postlistdbname, data);
   }
 }
