@@ -41,7 +41,7 @@ class ConntedtivityController extends GetxController {
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.green,
               borderRadius: 12,
-              margin: EdgeInsets.only(bottom: 20, left: 12, right: 12),
+              margin: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
               colorText: Colors.white);
         }
 
@@ -53,7 +53,7 @@ class ConntedtivityController extends GetxController {
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.green,
               borderRadius: 12,
-              margin: EdgeInsets.only(bottom: 20, left: 12, right: 12),
+              margin: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
               colorText: Colors.white);
         }
         break;
@@ -64,7 +64,7 @@ class ConntedtivityController extends GetxController {
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: Colors.red,
               borderRadius: 12,
-              margin: EdgeInsets.only(bottom: 20, left: 12, right: 12),
+              margin: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
               colorText: Colors.white);
         }
         break;

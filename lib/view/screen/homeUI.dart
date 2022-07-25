@@ -1,10 +1,14 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shadinlab_one/Controller/conntivity_controller.dart';
 import 'package:shadinlab_one/Controller/homecontroller.dart';
+import 'package:shadinlab_one/services/localNotification.dart';
 
+import '../../services/firebasePushnotification.dart';
 import 'add_data.dart';
 import 'audioplayer.dart';
 
@@ -20,6 +24,22 @@ class _MyHomePageState extends State<MyHomePage> {
   HomeController homeController = Get.put(HomeController());
   ConntedtivityController cc = ConntedtivityController.to;
 
+  //  checkForInitialMessage() async {
+  // await Firebase.initializeApp();
+  // RemoteMessage? initialMessage =
+  //     await FirebaseMessaging.instance.getInitialMessage();
+
+  // if (initialMessage != null) {
+  //   PushNotification notification = PushNotification(
+  //     title: initialMessage.notification?.title,
+  //     body: initialMessage.notification?.body,
+  //   );
+  //   setState(() {
+  //     _notificationInfo = notification;
+  //     _totalNotifications++;
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     RxDouble keyboardcheak = 15.0.obs;
@@ -34,6 +54,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 homeController.onInit();
               },
               icon: Icon(Icons.refresh_outlined)),
+          IconButton(
+              onPressed: () {
+                NotificationService().showNotification(
+                    id: 3,
+                    title: 'Shadin lab',
+                    body: 'shedule tab  notification 10',
+                    time: 10);
+              },
+              icon: Icon(
+                Icons.notifications_active,
+                size: 18,
+              )),
+          IconButton(
+              onPressed: () {
+                NotificationService().showNotification(
+                    id: 3,
+                    title: 'Shadin lab',
+                    body: 'Tab notification',
+                    time: 1);
+              },
+              icon: Icon(
+                Icons.notifications,
+                size: 18,
+              )),
         ],
       ),
       body: Padding(
