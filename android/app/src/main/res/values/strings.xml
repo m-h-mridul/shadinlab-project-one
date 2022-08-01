@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resource>
+    <string name="app_name">shadin lab</string>
+    <string name="facebook_app_id">729882868316911</string>
+    <string name="fb_login_protocol_scheme">fb729882868316911</string>
+    <string name="facebook_client_token">2f53f7cce61af9047655db10fcba2cb7</string>
+</resource >

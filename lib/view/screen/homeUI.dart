@@ -1,14 +1,10 @@
 // ignore_for_file: invalid_use_of_protected_member
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shadinlab_one/Controller/conntivity_controller.dart';
 import 'package:shadinlab_one/Controller/homecontroller.dart';
 import 'package:shadinlab_one/services/localNotification.dart';
-
-import '../../services/firebasePushnotification.dart';
 import 'add_data.dart';
 import 'audioplayer.dart';
 
@@ -135,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               style: ElevatedButton.styleFrom(
                   primary: Color.fromARGB(255, 115, 197, 170),
-                  fixedSize: Size(MediaQuery.of(context).size.width,
+                  fixedSize: Size(MediaQuery.of(context).size.width * 0.6,
                       MediaQuery.of(context).size.height * 0.06),
                   textStyle: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold)),

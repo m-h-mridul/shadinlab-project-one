@@ -1,11 +1,13 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/route_manager.dart';
+import 'package:shadinlab_one/Controller/auth_controller.dart';
+import 'package:shadinlab_one/view/screen/authui.dart';
 
 class Audio_playerADD extends StatefulWidget {
   const Audio_playerADD({Key? key}) : super(key: key);
@@ -15,6 +17,7 @@ class Audio_playerADD extends StatefulWidget {
 }
 
 class _Audio_playerADDState extends State<Audio_playerADD> {
+  AuthController controller = Get.put(AuthController());
   String audioasset = "assets/songs/dua_lipa_feat_dababy_-_levitating.mp3";
   AudioPlayer player = AudioPlayer();
   int maxduration = 100;
@@ -24,7 +27,7 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
   String currentpostlabel = "00:00";
   //**from url */
   String url =
-      "https://drive.google.com/file/d/1zYL02_802M2pXqljRrbjCt8O3gB0uJg3/view?usp=sharing";
+      "http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/theme_01.mp3";
   late AudioPlayer player_url;
   int maxduration_url = 100;
   int currentpos_url = 0;
@@ -33,7 +36,7 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
   String currentpostlabel_url = "00:00";
 
   //**from device */
-  late String deviceurl;
+  String deviceurl = "";
   late AudioPlayer player_device;
   int maxduration_device = 100;
   int currentpos_device = 0;
@@ -139,15 +142,19 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
   }
 
   openFile() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.audio);
-    if (result != null) {
-      setState(() {
-        deviceurl = result.paths.first!;
-        File file = File(result.files.single.name);
-      });
-    } else {
-      // User canceled the picker
+    try {
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(type: FileType.audio);
+      if (result != null) {
+        setState(() {
+          deviceurl = result.paths.first!;
+          File file = File(result.files.single.name);
+        });
+      } else {
+        // User canceled the picker
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -358,10 +365,10 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
                   children: [
                     ElevatedButton.icon(
                         onPressed: () async {
-                          
-                          if (deviceurl.isEmpty) {
-                            await openFile();
-                          } else {
+                          try {
+                            if (deviceurl.isEmpty) {
+                              await openFile();
+                            }
                             if (!isplaying_device && !audioplayed_device) {
                               await player_device
                                   .play(DeviceFileSource(deviceurl));
@@ -382,6 +389,8 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
                                 isplaying_device = false;
                               });
                             }
+                          } catch (e) {
+                            print('find error music get ${e}');
                           }
                         },
                         icon: Icon(
@@ -415,14 +424,16 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.green,
-      //   tooltip: 'AddData',
-      //   onPressed: () {},
-      //   child: Icon(
-      //     Icons.arrow_forward_ios,
-      //   ),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
+        tooltip: 'AddData',
+        onPressed: () {
+          Get.to(() => AuthPages());
+        },
+        child: Icon(
+          Icons.arrow_forward_ios,
+        ),
+      ),
     ));
   }
 }

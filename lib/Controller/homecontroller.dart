@@ -1,4 +1,4 @@
-// ignore_for_file: unrelated_type_equality_checks, non_constant_identifier_names
+// ignore_for_file: unrelated_type_equality_checks, non_constant_identifier_names, invalid_use_of_protected_member
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
@@ -18,7 +18,6 @@ class HomeController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    // TODO: implement onInit
     super.onInit();
     try {
       cc = ConntedtivityController.to;
@@ -29,8 +28,7 @@ class HomeController extends GetxController {
         // hivedb.putdata(datalist.value);
         //**for rest api data */
         await RestApi_dataget();
-        await restapi_getdatafromhive();
-
+       // await restapi_getdatafromhive();
       } else {
         //**for rest api  */
         await restapi_getdatafromhive();
@@ -74,7 +72,6 @@ class HomeController extends GetxController {
   RestApi_dataget() async {
     String data = await ApiService.getdata();
     UserSentInfo userinfo = userRegistationInfoFromMap(data);
-    List<Post> postdata = userinfo.posts;
     //**rs list */
     postlist.clear();
     postlist.value.addAll(userinfo.posts);
@@ -85,11 +82,12 @@ class HomeController extends GetxController {
   restapi_getdatafromhive() async {
     print('hive data get');
     if (!hivedb.dataCheak()) {
-      List<Post> data = await hivedb.restpaigetdata();
-      print(data[3].body);
-      postlist.clear();
-      postlist.value.addAll(data);
-      postlist.refresh();
+      print('method call for dat get hive');
+      List<Post> data = await  hivedb.restpaigetdata();
+      // print(data[3].body);
+      // postlist.clear();
+      // postlist.value.addAll(data);
+      // postlist.refresh();
     } else {
       print('Data cannot find in hive');
     }

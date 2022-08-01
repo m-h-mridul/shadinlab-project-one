@@ -1,7 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:shadinlab_one/model/modelapidata.dart';
 import 'package:shadinlab_one/services/api_service.dart';
-
 import '../../Controller/homecontroller.dart';
 
 class AddData extends StatelessWidget {
@@ -25,6 +26,8 @@ class AddData extends StatelessWidget {
               TextFormField(
                 onChanged: (value) {},
                 controller: title,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
                 validator: (_) {
                   if (title.text.length < 3) {
                     return 'Please Enter title more then 3 letter';
@@ -40,6 +43,8 @@ class AddData extends StatelessWidget {
               TextFormField(
                 onChanged: (value) {},
                 controller: details,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
                 validator: (_) {
                   if (title.text.length < 3) {
                     return 'Please Enter details about more then 3 letter';
@@ -53,14 +58,14 @@ class AddData extends StatelessWidget {
                 height: 15,
               ),
               ElevatedButton(
-                child: const Text('Save'),
                 onPressed: () {
+                 
                   if (formkey.currentState!.validate()) {
                     Post post = Post(
                         title: title.text.toString(),
                         body: details.text.toString(),
                         id: homeController.datalist.value.length + 1);
-                    ApiService.postdata(post);
+                  ApiService.postdata(post);
                     homeController.RestApi_dataget();
 
                     //** */ for firebase connection
@@ -77,6 +82,7 @@ class AddData extends StatelessWidget {
                         MediaQuery.of(context).size.height * 0.06),
                     textStyle: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold)),
+                child: const Text('Save'),
               ),
             ],
           ),

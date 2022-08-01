@@ -1,11 +1,13 @@
 // ignore_for_file: unused_local_variable
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:shadinlab_one/model/modelapidata.dart';
+import 'package:http/http.dart' as http;
 
 class ApiService {
   static getHeaders() {
@@ -46,22 +48,28 @@ class ApiService {
   }
 
   static postdata(Post data) async {
+    Map<String, dynamic> data2 = {
+      'id': data.id.toString(),
+      'title': data.title,
+      'body': data.body,
+    };
     try {
-      var response = await dio.post(
-        "api/posts_add",
-        data: data.toMap(),
-        options: Options(
-          followRedirects: false,
-          validateStatus: (status) => true,
-        ),
+      var url = Uri.parse('http://donation.shadhintech.com/api/posts_add');
+      var response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
+        body: data2, // data.toMap(),
       );
-      print('response.statusCode ${response.statusCode}');
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
       if (response.statusCode != 200) {
-        Get.snackbar('Errors find ', '',
+        Get.snackbar('Errors find ', '${response.statusCode}',
             snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Color.fromARGB(255, 230, 103, 94),
+            backgroundColor: const Color.fromARGB(255, 230, 103, 94),
             borderRadius: 12,
-            margin: EdgeInsets.only(bottom: 20, left: 12, right: 12),
+            margin: const EdgeInsets.only(bottom: 20, left: 12, right: 12),
             colorText: Colors.white);
       }
     } on FormatException catch (_) {
