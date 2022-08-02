@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:linkedin_login/linkedin_login.dart';
 import 'package:shadinlab_one/services/facebook_auth.dart';
+import 'package:shadinlab_one/view/screen/phonelogin.dart';
 import 'package:shadinlab_one/view/screen/profileView.dart';
 import '../../services/google_loginauth.dart';
 import '../../services/twitter_auth.dart';
@@ -137,6 +138,18 @@ class AuthPages extends StatelessWidget {
                     ),
                   );
                 },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  Get.to(() => LoginWithPhone());
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red),
+                ),
+                child: const Text('Phone login'),
               ),
             ]),
       ),

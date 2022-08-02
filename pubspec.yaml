@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
@@ -12,8 +12,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
 
   cupertino_icons: ^1.0.2
   hive: ^2.2.3
@@ -40,7 +38,11 @@ dependencies:
   google_sign_in: ^5.4.0
   #for mimage cahce
   cached_network_image: ^3.2.1
-
+  #date fromate
+  intl: ^0.17.0
+  background_fetch: ^1.1.0
+  #for background
+  flutter_background_service: ^2.1.3
 
 dev_dependencies:
   hive_generator: ^1.1.3
@@ -48,13 +50,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  
 
 flutter:
   uses-material-design: true
   assets:
     - assets/songs/
-
-  
-
- 

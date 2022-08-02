@@ -1,9 +1,13 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shadinlab_one/Controller/conntivity_controller.dart';
 import 'package:shadinlab_one/Controller/homecontroller.dart';
+import 'package:shadinlab_one/main.dart';
 import 'package:shadinlab_one/services/localNotification.dart';
 import 'add_data.dart';
 import 'audioplayer.dart';
@@ -16,9 +20,56 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   HomeController homeController = Get.put(HomeController());
   ConntedtivityController cc = ConntedtivityController.to;
+
+  @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) return;
+
+    final isBackground = state == AppLifecycleState.paused;
+    // time = DateFormat('hh:mm a').format(DateTime.now());
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('app life cycle');
+
+    if (isBackground) {
+      FlutterBackgroundService().invoke('setAsBackground');
+      // try {
+      //   String time = DateFormat('hh:mm a').format(DateTime(
+      //       DateTime.now().year,
+      //       DateTime.now().month,
+      //       DateTime.now().day,
+      //       DateTime.now().hour,
+      //       DateTime.now().minute));
+      //   users.doc(time).set({
+      //     'time': time,
+      //     'date':
+      //         '${DateTime.now().day}:${DateTime.now().month}:${DateTime.now().year}',
+      //     'time zone': DateTime.now().timeZoneName,
+      //     'status ': 'when the app is backgroud',
+      //   }).then((value) => print("details add when app is background"));
+      // } catch (e) {
+      //   print(e);
+      // }
+    }
+  }
 
   //  checkForInitialMessage() async {
   // await Firebase.initializeApp();
