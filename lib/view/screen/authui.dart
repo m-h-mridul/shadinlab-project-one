@@ -32,9 +32,12 @@ class AuthPages extends StatelessWidget {
                   await signInWithFacebook();
                   // Get.to(() => Facebook_auth());
                 },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
-                ),
+                style: ElevatedButton.styleFrom(
+                    fixedSize: Size(MediaQuery.of(context).size.width * 0.8,
+                        MediaQuery.of(context).size.height * 0.06),
+                    primary: Colors.red,
+                    textStyle: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold)),
                 child: const Text('Facebook'),
               ),
               const SizedBox(
@@ -52,9 +55,12 @@ class AuthPages extends StatelessWidget {
                         user: user,
                       ));
                 },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
-                ),
+                style: ElevatedButton.styleFrom(
+                    fixedSize: Size(MediaQuery.of(context).size.width * 0.8,
+                        MediaQuery.of(context).size.height * 0.06),
+                    primary: Colors.red,
+                    textStyle: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold)),
                 child: const Text('Google'),
               ),
               const SizedBox(
@@ -77,9 +83,12 @@ class AuthPages extends StatelessWidget {
                     print('error in twitter button ${e}');
                   }
                 },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
-                ),
+                style: ElevatedButton.styleFrom(
+                    fixedSize: Size(MediaQuery.of(context).size.width * 0.8,
+                        MediaQuery.of(context).size.height * 0.06),
+                    primary: Colors.red,
+                    textStyle: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold)),
                 child: const Text('Twitter'),
               ),
               const SizedBox(
@@ -146,9 +155,12 @@ class AuthPages extends StatelessWidget {
                 onPressed: () async {
                   Get.to(() => LoginWithPhone());
                 },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.red),
-                ),
+                style: ElevatedButton.styleFrom(
+                    fixedSize: Size(MediaQuery.of(context).size.width * 0.8,
+                        MediaQuery.of(context).size.height * 0.06),
+                    primary: Colors.red,
+                    textStyle: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold)),
                 child: const Text('Phone login'),
               ),
             ]),

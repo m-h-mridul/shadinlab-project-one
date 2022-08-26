@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:shadinlab_one/services/api_service.dart';
+import 'package:shadinlab_one/services/api_getdata.dart';
 import '../model/dataModel.dart';
 import '../model/modelapidata.dart';
 import '../stroage/hivedb.dart';

@@ -14,6 +14,7 @@ import 'package:shadinlab_one/services/firebasePushnotification.dart';
 import 'package:shadinlab_one/stroage/adapterclass.dart';
 import 'package:shadinlab_one/stroage/hivedb.dart';
 import 'package:shadinlab_one/services/localNotification.dart';
+import 'package:shadinlab_one/view/screen/loadingpage.dart';
 import 'Controller/conntivity_controller.dart';
 import 'model/modelapidata.dart';
 import 'view/screen/homeUI.dart';
@@ -98,20 +99,19 @@ void onStart(ServiceInstance service) async {
     service.on('setAsForeground').listen((event) {
       service.setAsForegroundService();
     });
-    sentdata_firebase('From on start method ');
+
     service.on('setAsBackground').listen((event) async {
       service.setAsBackgroundService();
       await Firebase.initializeApp();
 
-      sentdata_firebase('Inside background method');
       CollectionReference users =
           FirebaseFirestore.instance.collection('app life cycle');
       try {
         final periodicTimer = Timer.periodic(
-          const Duration(minutes: 1),
+          const Duration(minutes: 10),
           (timer) {
             // Update user about remaining time
-            sentdata_firebase('Inside background method timmer periodic.');
+
             time_new = DateFormat('hh:mm a').format(DateTime(
                 DateTime.now().year,
                 DateTime.now().month,
@@ -170,16 +170,6 @@ void onStart(ServiceInstance service) async {
   // });
 }
 
-int count = 0;
-void sentdata_firebase(String data) {
-  print('\n');
-  print('\n');
-  print(data);
-  print('\n');
-  print('\n');
-  // print('Data print in bcakground services ${count++}');
-}
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -191,7 +181,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Ladingpage(),
     );
   }
 }

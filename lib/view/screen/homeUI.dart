@@ -4,17 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:shadinlab_one/Controller/conntivity_controller.dart';
 import 'package:shadinlab_one/Controller/homecontroller.dart';
-import 'package:shadinlab_one/main.dart';
 import 'package:shadinlab_one/services/localNotification.dart';
 import 'add_data.dart';
-import 'audioplayer.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const MyHomePage({Key? key}) : super(key: key);
+  
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -22,7 +18,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   HomeController homeController = Get.put(HomeController());
-  ConntedtivityController cc = ConntedtivityController.to;
 
   @override
   initState() {
@@ -94,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('To-Do'),
         actions: [
           IconButton(
               onPressed: () {
@@ -190,16 +185,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
-        tooltip: 'AddData',
-        onPressed: () {
-          Get.to(() => Audio_playerADD());
-        },
-        child: Icon(
-          Icons.arrow_forward_ios,
-        ),
-      ),
+     
     );
   }
 }

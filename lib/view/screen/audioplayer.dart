@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/route_manager.dart';
 import 'package:shadinlab_one/Controller/auth_controller.dart';
-import 'package:shadinlab_one/view/screen/authui.dart';
 
 class Audio_playerADD extends StatefulWidget {
   const Audio_playerADD({Key? key}) : super(key: key);
@@ -20,7 +19,7 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
   AuthController controller = Get.put(AuthController());
   String audioasset = "assets/songs/dua_lipa_feat_dababy_-_levitating.mp3";
   AudioPlayer player = AudioPlayer();
-  int maxduration = 100;
+  int maxduration = 10;
   int currentpos = 0;
   bool isplaying = false;
   bool audioplayed = false;
@@ -29,20 +28,25 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
   String url =
       "http://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/theme_01.mp3";
   late AudioPlayer player_url;
-  int maxduration_url = 100;
+  int maxduration_url = 10;
   int currentpos_url = 0;
   bool isplaying_url = false;
   bool audioplayed_url = false;
   String currentpostlabel_url = "00:00";
 
   //**from device */
-  String deviceurl = "";
+  String deviceurl = 'not selcted';
   late AudioPlayer player_device;
-  int maxduration_device = 100;
+  int maxduration_device = 10;
   int currentpos_device = 0;
   bool isplaying_device = false;
   bool audioplayed_device = false;
   String currentpostlabel_device = "00:00";
+  String maxduration_device_show = "00:00";
+  FilePickerResult? result;
+  String device_audio_name = '';
+  int repect_audio_device = 0;
+  int repect_udioplay_time_device = 0;
 
   @override
   void initState() {
@@ -99,11 +103,18 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
         //refresh the UI
       });
     });
-    //**from devie */
+    //**from device */
     player_device = AudioPlayer();
     Future.delayed(Duration.zero, () async {
       player_device.onDurationChanged.listen((Duration d) {
+        int shours = Duration(milliseconds: d.inMilliseconds).inHours;
+        int sminutes = Duration(milliseconds: d.inMilliseconds).inMinutes;
+        int sseconds = Duration(milliseconds: d.inMilliseconds).inSeconds;
+
+        int rminutes = sminutes - (shours * 60);
+        int rseconds = sseconds - (sminutes * 60 + shours * 60 * 60);
         maxduration_device = d.inMilliseconds;
+        maxduration_device_show = "$rminutes:$rseconds";
         setState(() {});
       });
 
@@ -121,15 +132,31 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
 
         currentpostlabel_device = "$rminutes:$rseconds";
 
+        setState(() {});
+      }).onDone(() {
+        print('audio play compilte');
+      });
+      player_device.onPlayerComplete.listen((event) {
         setState(() {
-          //refresh the UI
+          currentpostlabel_device = '00:00';
+          currentpos_device = 0;
+          if (repect_udioplay_time_device < repect_audio_device) {
+            repect_udioplay_time_device++;
+            player_device.resume();
+            isplaying_device = true;
+            audioplayed_device = true;
+          } else {
+            isplaying_device = false;
+            audioplayed_device = false;
+            repect_udioplay_time_device = 0;
+            player_device.setReleaseMode(ReleaseMode.stop);
+          }
         });
       });
     });
 
     /// player.setReleaseMode(ReleaseMode.release);
-    player_url.setReleaseMode(ReleaseMode.release);
-    player_device.setReleaseMode(ReleaseMode.release);
+    player_url.setReleaseMode(ReleaseMode.stop);
     super.initState();
   }
 
@@ -143,12 +170,12 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
 
   openFile() async {
     try {
-      FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.audio);
+      result = await FilePicker.platform.pickFiles(type: FileType.audio);
       if (result != null) {
         setState(() {
-          deviceurl = result.paths.first!;
-          File file = File(result.files.single.name);
+          deviceurl = result!.paths.first!;
+          device_audio_name = result!.files.single.name;
+          File file = File(result!.files.single.name);
         });
       } else {
         // User canceled the picker
@@ -336,13 +363,13 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  "Audio Play from device ",
+                const Text(
+                  "Audio Play From Device ",
                   style: TextStyle(fontSize: 25),
                 ),
                 Text(
-                  currentpostlabel_device,
-                  style: TextStyle(fontSize: 25),
+                  device_audio_name,
+                  style: TextStyle(fontSize: 16),
                 ),
                 Slider(
                   value: double.parse(currentpos_device.toString()),
@@ -353,6 +380,7 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
                   onChanged: (double value) async {
                     int seekval = value.round();
                     await player_device.seek(Duration(milliseconds: seekval));
+
                     // if(result == 1){ //seek successful
                     //      currentpos = seekval;
                     // }else{
@@ -360,13 +388,29 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
                     // }
                   },
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0, right: 18),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        currentpostlabel_device,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        maxduration_device_show,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
                 Wrap(
                   spacing: 10,
                   children: [
                     ElevatedButton.icon(
                         onPressed: () async {
                           try {
-                            if (deviceurl.isEmpty) {
+                            if (deviceurl == 'not selcted') {
                               await openFile();
                             }
                             if (!isplaying_device && !audioplayed_device) {
@@ -396,42 +440,22 @@ class _Audio_playerADDState extends State<Audio_playerADD> {
                         icon: Icon(
                             isplaying_device ? Icons.pause : Icons.play_arrow),
                         label: Text(isplaying_device ? "Pause" : "Play")),
-                    ElevatedButton.icon(
+                    ElevatedButton(
                         onPressed: () async {
-                          if (!isplaying_device && !audioplayed_device) {
-                            await player_device.stop();
-                            setState(() {
-                              isplaying_device = false;
-                              audioplayed_device = false;
-                            });
-                          } else if (audioplayed_device && !isplaying_device) {
-                            await player_device.stop();
-                            setState(() {
-                              isplaying_device = false;
-                            });
-                          } else {
-                            await player_device.pause();
-                            await player_device.stop();
-                            setState(() {});
-                          }
+                          setState(() {
+                            if (repect_audio_device < 2) {
+                              repect_audio_device++;
+                            } else {
+                              repect_audio_device = 0;
+                            }
+                          });
                         },
-                        icon: Icon(Icons.stop),
-                        label: Text("Stop")),
+                        child: Text("Repact $repect_audio_device")),
                   ],
                 )
               ],
             ),
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green,
-        tooltip: 'AddData',
-        onPressed: () {
-          Get.to(() => AuthPages());
-        },
-        child: Icon(
-          Icons.arrow_forward_ios,
         ),
       ),
     ));

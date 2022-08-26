@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:shadinlab_one/model/modelapidata.dart';
-import 'package:shadinlab_one/services/api_service.dart';
+import 'package:shadinlab_one/services/api_postdata.dart';
 import '../../Controller/homecontroller.dart';
 
 class AddData extends StatelessWidget {
@@ -59,21 +59,22 @@ class AddData extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                 
                   if (formkey.currentState!.validate()) {
                     Post post = Post(
                         title: title.text.toString(),
                         body: details.text.toString(),
                         id: homeController.datalist.value.length + 1);
-                  ApiService.postdata(post);
+                    String code = ApiPostdata.postdata(post);
                     homeController.RestApi_dataget();
 
                     //** */ for firebase connection
                     // homeController.datasentdb(
                     //     title: title.text.toString(),
                     //     details: details.text.toString());
-                    title.clear();
-                    details.clear();
+                    if (code == '200') {
+                      title.clear();
+                      details.clear();
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(
